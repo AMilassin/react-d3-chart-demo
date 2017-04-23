@@ -1,0 +1,17 @@
+
+.averageLine {
+  stroke: #D3D0DD;
+  stroke-width: 2px;
+}
+
+.averageLabel {
+  fill: #FFF;
+  font-size: 10px;
+}
+
+.bar {
+  fill: #80769E;
+}
+.bar:hover {
+  fill: #5F5385;
+}
