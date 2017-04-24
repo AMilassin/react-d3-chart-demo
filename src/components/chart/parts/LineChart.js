@@ -28,7 +28,7 @@ export default class LineChart extends React.Component {
         averageValue={ lineData.average }
         min={ yscale(lineData.min) }
         max={ yscale(lineData.max) }
-        position={ xscale(lineData.year) + (width / 2) }
+        position={ xscale(lineData.year) - (width / 2) }
         width={ width }
       />
     );
@@ -45,27 +45,33 @@ export default class LineChart extends React.Component {
                     .domain([d3.min(years) - 1, d3.max(years) + 1])
                     .range([0, this.props.width])
 
+    const axisPadding = 30;
+    let scale = Math.min(this.props.width, this.props.height);
+    scale = (scale - axisPadding) / scale;
+
     return (
       <svg width={ this.props.width } height={ this.props.height }>
-        { /* X-Axis: years */ }
-        <Axis
-          data={ years }
-          length={ this.props.width }
-          position={ this.props.height }
-          padding={ 30 }
-          orient="bottom"
-          scale={ xscale }/>
+        <g transform={ `matrix(${scale} 0 0 ${scale} ${axisPadding} ${axisPadding / 2})` }>
+          { /* X-Axis: years */ }
+          <Axis
+            data={ years }
+            length={ this.props.width }
+            position={ this.props.height }
+            padding={ 0 }
+            orient="bottom"
+            scale={ xscale }/>
 
-        { /* Y-Axis: values */ }
-        <Axis
-          length={ this.props.height }
-          gridWidth={ this.props.width }
-          position={ 0 }
-          padding={ 30 }
-          scale={ yscale }
-          orient="left" />
+          { /* Y-Axis: values */ }
+          <Axis
+            length={ this.props.height }
+            gridWidth={ this.props.width }
+            position={ 0 }
+            padding={ 0 }
+            scale={ yscale }
+            orient="left" />
 
-        { dataset.data.map((line, index) => this._renderLine(line, index, yscale, xscale)) }
+          { dataset.data.map((line, index) => this._renderLine(line, index, yscale, xscale)) }
+        </g>
       </svg>
     );
   }
